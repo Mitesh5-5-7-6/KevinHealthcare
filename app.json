@@ -3,8 +3,8 @@
     "name": "KevinHealthcare",
     "slug": "KevinHealthcare",
     "version": "1.0.0",
-    "orientation": "portrait",
-    "icon": "./assets/images/icon.png",
+    "orientation": "default",
+    "icon": "./assets/images/KHC_LOGO.png",
     "scheme": "kevinhealthcare",
     "userInterfaceStyle": "automatic",
     "newArchEnabled": true,
@@ -12,23 +12,25 @@
       "supportsTablet": true
     },
     "android": {
+      "supportsTablet": true,
       "adaptiveIcon": {
-        "foregroundImage": "./assets/images/adaptive-icon.png",
+        "foregroundImage": "./assets/images/KHC_LOGO.png",
         "backgroundColor": "#ffffff"
       },
-      "edgeToEdgeEnabled": true
+      "edgeToEdgeEnabled": true,
+      "package": "com.mitesh5576.KevinHealthcare"
     },
     "web": {
       "bundler": "metro",
       "output": "static",
-      "favicon": "./assets/images/favicon.png"
+      "favicon": "./assets/images/KHC_LOGO.png"
     },
     "plugins": [
       "expo-router",
       [
         "expo-splash-screen",
         {
-          "image": "./assets/images/splash-icon.png",
+          "image": "./assets/images/KHC_LOGO.png",
           "imageWidth": 200,
           "resizeMode": "contain",
           "backgroundColor": "#ffffff"
@@ -37,6 +39,12 @@
     ],
     "experiments": {
       "typedRoutes": true
+    },
+    "extra": {
+      "router": {},
+      "eas": {
+        "projectId": "77f3f3cc-796f-45b2-aed6-35dfdabe3801"
+      }
     }
   }
 }
