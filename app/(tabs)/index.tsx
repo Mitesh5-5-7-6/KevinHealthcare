@@ -7,7 +7,7 @@ export default function HomeScreen() {
     <AnimatedTabView>
       <View style={styles.container}>
         <Image
-          source={require('@/assets/images/KHC_LOGO.png')} // Use your correct path
+          source={require('@/assets/images/Degree/BDS/01.jpg')} // Use your correct path
           style={styles.logo}
           resizeMode="contain"
         />

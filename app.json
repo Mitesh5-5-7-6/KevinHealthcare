@@ -4,7 +4,12 @@
     "slug": "KevinHealthcare",
     "version": "1.0.0",
     "orientation": "default",
-    "icon": "./assets/images/KHC_LOGO.png",
+    "icon": "./assets/icon.png",
+    "splash": {
+      "image": "./assets/splash.png",
+      "resizeMode": "contain",
+      "backgroundColor": "#ffffff"
+    },
     "scheme": "kevinhealthcare",
     "userInterfaceStyle": "automatic",
     "newArchEnabled": true,
@@ -14,7 +19,7 @@
     "android": {
       "supportsTablet": true,
       "adaptiveIcon": {
-        "foregroundImage": "./assets/images/KHC_LOGO.png",
+        "foregroundImage": "./assets/icon.png",
         "backgroundColor": "#ffffff"
       },
       "edgeToEdgeEnabled": true,

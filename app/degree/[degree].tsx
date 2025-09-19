@@ -1,24 +1,15 @@
 // app/degree/[degree].tsx
 import { Ionicons } from "@expo/vector-icons";
-import { router, Stack, useLocalSearchParams } from "expo-router";
+import { Stack, useLocalSearchParams, useRouter } from "expo-router";
 import { useRef, useState } from "react";
 import {
-    Animated,
-    Dimensions,
-    FlatList,
-    Image,
-    SafeAreaView,
-    ScrollView,
-    StatusBar,
-    StyleSheet,
-    Text,
-    TouchableOpacity,
-    View
+    Animated, Dimensions, FlatList, Image, SafeAreaView, ScrollView, StyleSheet, Text, TouchableOpacity, View
 } from "react-native";
-import 'react-native-gesture-handler';
-import { Gesture, GestureDetector } from 'react-native-gesture-handler';
+// import 'react-native-gesture-handler';
+// import { Gesture } from 'react-native-gesture-handler';
 
 export default function DegreeDetailScreen() {
+    const router = useRouter();
     const { degree, data } = useLocalSearchParams();
     const products = data ? JSON.parse(data as string) : [];
     const [selectedProductIndex, setSelectedProductIndex] = useState(0);
@@ -86,29 +77,29 @@ export default function DegreeDetailScreen() {
         translateX.setValue(translationX * 0.3); // Dampen the movement
     };
 
-    const panGesture = Gesture.Pan()
-        .activeOffsetX([-20, 20]) // ignore tiny movements
-        .hitSlop({ left: 30, right: 30 }) // don’t trigger if swipe starts at the edge
-        .onUpdate((event) => {
-            const { translationX } = event;
-            translateX.setValue(translationX * 0.3);
-        })
-        .onEnd((event) => {
-            const { translationX, velocityX } = event;
+    // const panGesture = Gesture.Pan()
+    //     .activeOffsetX([-20, 20]) // ignore tiny movements
+    //     .hitSlop({ left: 30, right: 30 }) // don’t trigger if swipe starts at the edge
+    //     .onUpdate((event) => {
+    //         const { translationX } = event;
+    //         translateX.setValue(translationX * 0.3);
+    //     })
+    //     .onEnd((event) => {
+    //         const { translationX, velocityX } = event;
 
-            if (Math.abs(translationX) > 80 || Math.abs(velocityX) > 800) {
-                if (translationX > 0) {
-                    handleSwipe("right");
-                } else {
-                    handleSwipe("left");
-                }
-            } else {
-                Animated.spring(translateX, {
-                    toValue: 0,
-                    useNativeDriver: true,
-                }).start();
-            }
-        });
+    //         if (Math.abs(translationX) > 80 || Math.abs(velocityX) > 800) {
+    //             if (translationX > 0) {
+    //                 handleSwipe("right");
+    //             } else {
+    //                 handleSwipe("left");
+    //             }
+    //         } else {
+    //             Animated.spring(translateX, {
+    //                 toValue: 0,
+    //                 useNativeDriver: true,
+    //             }).start();
+    //         }
+    //     });
 
     // const onHandlerStateChange = (event: any) => {
     //     if (event.nativeEvent.state === State.END) {
@@ -154,18 +145,19 @@ export default function DegreeDetailScreen() {
             <Stack.Screen options={{ headerShown: false }} />
 
             <SafeAreaView style={styles.container}>
-                <StatusBar barStyle="light-content" backgroundColor="#2C5530" />
+                {/* <StatusBar barStyle="light-content" backgroundColor="#2C5530" /> */}
 
-                <View style={styles.header}>
+                {/* <View style={styles.header}>
                     <TouchableOpacity onPress={() => router.back()} style={{ marginRight: 10 }}>
                         <Ionicons name="arrow-back" size={24} color="#fff" />
                     </TouchableOpacity>
                     <Text style={styles.headerTitle}>{degree} Products</Text>
-                </View>
+                </View> */}
 
                 <View style={[styles.mainContent, isMobile && { flexDirection: "column" }]}>
                     {/* Product List */}
                     <View style={[styles.sidebar, isMobile && { width: "100%", borderRightWidth: 0 }]}>
+                        {/* Sidebar list takes all space above the button */}
                         <FlatList
                             horizontal={isMobile}
                             data={products}
@@ -174,77 +166,87 @@ export default function DegreeDetailScreen() {
                             showsHorizontalScrollIndicator={false}
                             showsVerticalScrollIndicator={false}
                             contentContainerStyle={styles.sidebarList}
+                            style={{ flex: 1 }}
                         />
+
+                        <TouchableOpacity
+                            style={styles.backButton}
+                            onPress={() => router.back()}
+                        >
+                            <Ionicons name="arrow-back" size={20} color="#2C5530" />
+                            <Text style={styles.backButtonText}>Back</Text>
+                        </TouchableOpacity>
                     </View>
+
 
                     {/* Product Details */}
                     <View style={styles.contentArea}>
                         {selectedProduct ? (
                             <ScrollView style={styles.productDetail} showsVerticalScrollIndicator={false}>
-                                <View style={styles.productTitleSection}>
+                                {/* <View style={styles.productTitleSection}>
                                     <Text style={styles.productTitle}>{selectedProduct.name}</Text>
                                     {products.length > 1 && (
                                         <Text style={styles.productCounter}>
                                             {selectedProductIndex + 1} of {products.length}
                                         </Text>
                                     )}
-                                </View>
+                                </View> */}
 
-                                <GestureDetector gesture={panGesture}>
-                                    <Animated.View
+                                {/* <GestureDetector gesture={panGesture}> */}
+                                <Animated.View
+                                    style={[
+                                        styles.productImageSection,
+                                        {
+                                            transform: [{ translateX }],
+                                            opacity,
+                                        }
+                                    ]}
+                                >
+                                    <Image
+                                        source={selectedProduct.image}
                                         style={[
-                                            styles.productImageSection,
+                                            styles.productImage,
                                             {
-                                                transform: [{ translateX }],
-                                                opacity,
-                                            }
+                                                width: isMobile ? screenWidth * 0.9 : screenWidth * 0.9,
+                                                height: isMobile ? screenWidth * 0.9 : screenWidth * 0.45,
+                                            },
                                         ]}
-                                    >
-                                        <Image
-                                            source={selectedProduct.image}
-                                            style={[
-                                                styles.productImage,
-                                                {
-                                                    width: isMobile ? screenWidth * 0.9 : screenWidth * 0.5,
-                                                    height: isMobile ? screenWidth * 0.9 : screenWidth * 0.5,
-                                                },
-                                            ]}
-                                            resizeMode="contain"
-                                        />
+                                        resizeMode="contain"
+                                    />
 
-                                        {/* Swipe indicators */}
-                                        {/* {products.length > 1 && (
-                                            <>
-                                                {selectedProductIndex > 0 && (
-                                                    <TouchableOpacity
-                                                        style={[styles.swipeButton, styles.swipeButtonLeft]}
-                                                        onPress={() => handleSwipe('right')}
-                                                    >
-                                                        <Ionicons name="chevron-back" size={24} color="#2C5530" />
-                                                    </TouchableOpacity>
-                                                )}
+                                    {/* Swipe indicators */}
+                                    {products.length > 1 && (
+                                        <>
+                                            {selectedProductIndex > 0 && (
+                                                <TouchableOpacity
+                                                    style={[styles.swipeButton, styles.swipeButtonLeft]}
+                                                    onPress={() => handleSwipe('right')}
+                                                >
+                                                    <Ionicons name="chevron-back" size={24} color="#2C5530" />
+                                                </TouchableOpacity>
+                                            )}
 
-                                                {selectedProductIndex < products.length - 1 && (
-                                                    <TouchableOpacity
-                                                        style={[styles.swipeButton, styles.swipeButtonRight]}
-                                                        onPress={() => handleSwipe('left')}
-                                                    >
-                                                        <Ionicons name="chevron-forward" size={24} color="#2C5530" />
-                                                    </TouchableOpacity>
-                                                )}
-                                            </>
-                                        )} */}
-                                    </Animated.View>
-                                </GestureDetector>
+                                            {selectedProductIndex < products.length - 1 && (
+                                                <TouchableOpacity
+                                                    style={[styles.swipeButton, styles.swipeButtonRight]}
+                                                    onPress={() => handleSwipe('left')}
+                                                >
+                                                    <Ionicons name="chevron-forward" size={24} color="#2C5530" />
+                                                </TouchableOpacity>
+                                            )}
+                                        </>
+                                    )}
+                                </Animated.View>
+                                {/* </GestureDetector> */}
 
                                 {/* Swipe instruction text */}
-                                {/* {products.length > 1 && (
+                                {products.length > 1 && (
                                     <View style={styles.swipeHint}>
                                         <Text style={styles.swipeHintText}>
-                                            Swipe left/right or use arrows to navigate
+                                            {/* Swipe left/right or use arrows to navigate */}
                                         </Text>
                                     </View>
-                                )} */}
+                                )}
                             </ScrollView>
                         ) : (
                             <View style={styles.emptyState}>
@@ -276,10 +278,18 @@ const styles = StyleSheet.create({
         textAlign: "center",
     },
     mainContent: { flex: 1, flexDirection: "row" },
+    // sidebar: {
+    //     backgroundColor: "#FFDAB9",
+    //     borderRightWidth: 1,
+    //     borderRightColor: "#ddd",
+    // },
     sidebar: {
-        backgroundColor: "#FFDAB9",
+        width: 150,
+        backgroundColor: "#FFDAB5",
+        paddingVertical: 8,
         borderRightWidth: 1,
         borderRightColor: "#ddd",
+        justifyContent: "space-between", // <- important
     },
     sidebarList: { padding: 8 },
     sidebarItem: {
@@ -353,4 +363,19 @@ const styles = StyleSheet.create({
     },
     emptyState: { flex: 1, justifyContent: "center", alignItems: "center" },
     emptyText: { fontSize: 16, fontWeight: "600", color: "#666", marginTop: 16 },
+    backButton: {
+        flexDirection: "row",
+        alignItems: "center",
+        justifyContent: "center",
+        padding: 14,
+        margin: 12,
+        backgroundColor: "#fba328ff",
+        borderRadius: 8,
+    },
+    backButtonText: {
+        marginLeft: 8,
+        fontSize: 14,
+        fontWeight: "600",
+        color: "#1c3d20ff",
+    },
 });
